@@ -17,14 +17,15 @@ HaffmanTree::HaffmanTree(std::string symbols)
 			else 
 				frequencies.update(symbols[i], frequencies.find(symbols[i]) + 1);
 		}
-		BuildTree(frequencies.get_size(),  frequencies);
+		BuildTree(frequencies.get_size(),  frequencies, HaffmanLeaf, SummLeaf);
+		
 	}
 }
 
-void HaffmanTree::BuildTree(int lenght, Map<char, int> frequencies)
+void HaffmanTree::BuildTree(int lenght, Map<char, int> frequencies, Node*& HaffmanLeaf, Node*& SummLeaf)
 {
-	Node* HaffmanLeaf = new Node[lenght];
-	Node * SummLeaf = new Node[lenght-1]; //array, where'd be stored sums of frequencies
+	HaffmanLeaf = new Node[lenght];
+	SummLeaf = new Node[lenght-1]; //array, where'd be stored sums of frequencies
 	
 	
 	Iterator<char, int> *iter = frequencies.create_iter();
@@ -35,7 +36,6 @@ void HaffmanTree::BuildTree(int lenght, Map<char, int> frequencies)
 		{
 			HaffmanLeaf[i].symbol = iter->next_key();
 			HaffmanLeaf[i].amount = iter->next_data();
-			
 		}
 	}
 	delete iter;
@@ -84,13 +84,15 @@ void HaffmanTree::BuildTree(int lenght, Map<char, int> frequencies)
 		}
 	}
 	root = &SummLeaf[lenght-2]; //putting a root-pointer to the last SummLeaf
-
+	
 
 	std::string code;
 	Create(code_table, decode_table, root, code);
 	std::cout<<std::endl;
 	//prints codes and freqs table
 	PrintFreq(HaffmanLeaf, lenght);
+	
+	
 }
 
 void HaffmanTree::freqQuickSort(Node* array, size_t lenght) //common QuickSort algorithm

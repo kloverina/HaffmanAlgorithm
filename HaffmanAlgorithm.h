@@ -32,21 +32,14 @@ private:
 		{
 			this->left = nullptr;
 			this->right = nullptr;
+			
 		}
 	};
 	Node* root;
-	
-	void clear_tree(Node* node)
-	{
-		if (node != nullptr)
-		{
-			clear_tree(node->left);
-			clear_tree(node->right);
-			delete node;
-		}
-	}
-	
-	void BuildTree(int lenght, Map<char, int> frequencies);
+	Node* HaffmanLeaf;
+	Node* SummLeaf;
+
+	void BuildTree(int lenght, Map<char, int> frequencies, Node*&, Node*&);
 	void freqQuickSort(Node*, size_t);
 	void Create(Map<char, std::string>& code_table, Map<std::string, char>& decode_table, Node* root, std::string&);
 	void PrintFreq(Node*, int);
@@ -54,7 +47,11 @@ private:
 
 public:
 	HaffmanTree(std::string symbols);
-	~HaffmanTree() { };
+	~HaffmanTree() 
+	{
+		delete[] HaffmanLeaf, SummLeaf;
+		root = nullptr;
+	};
 	Map <char, std::string> code_table;
 	Map <std::string, char> decode_table;
 	std::string getCode(std::string &);
